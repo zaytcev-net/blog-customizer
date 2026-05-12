@@ -3,16 +3,12 @@ import clsx from 'clsx';
 
 import { Article } from '../article/Article';
 import { ArticleParamsForm } from '../article-params-form/ArticleParamsForm';
-import {
-	defaultArticleState,
-	ArticleStateType,
-} from './../../constants/articleProps';
+import { defaultArticleState } from './../../constants/articleProps';
 
 import styles from './app.module.scss';
 
 export const App = () => {
-	const initialState: ArticleStateType = defaultArticleState;
-	const [pageState, setPageState] = useState(initialState);
+	const [pageState, setPageState] = useState(defaultArticleState);
 
 	return (
 		<main
@@ -26,7 +22,10 @@ export const App = () => {
 					'--bg-color': pageState.backgroundColor.value,
 				} as CSSProperties
 			}>
-			<ArticleParamsForm initialState={initialState} onApply={setPageState} />
+			<ArticleParamsForm
+				initialState={defaultArticleState}
+				onApply={setPageState}
+			/>
 			<Article />
 		</main>
 	);

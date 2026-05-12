@@ -25,15 +25,15 @@ type Props = {
 export const ArticleParamsForm = ({ initialState, onApply }: Props) => {
 	const [formState, setFormState] = useState(initialState);
 
-	const updateFormState = useCallback((updates: Partial<ArticleStateType>) => {
+	const updateFormState = (updates: Partial<ArticleStateType>) => {
 		setFormState((prev) => ({ ...prev, ...updates }));
-	}, []);
+	};
 
 	const handleSubmit = useCallback(
 		(event: FormEvent) => {
 			event.preventDefault();
 			onApply(formState);
-			setIsOpenArrowButton(false);
+			setIsOpenAside(false);
 		},
 		[formState, onApply]
 	);
@@ -43,23 +43,23 @@ export const ArticleParamsForm = ({ initialState, onApply }: Props) => {
 			event.preventDefault();
 			onApply(initialState);
 			setFormState(initialState);
-			setIsOpenArrowButton(false);
+			setIsOpenAside(false);
 		},
 		[initialState, onApply]
 	);
 
 	/*Реализация сайдбара*/
-	const [isOpenArrowBtn, setIsOpenArrowButton] = useState(false);
+	const [isOpenAside, setIsOpenAside] = useState(false);
 	const asideRef = useRef<HTMLElement>(null);
 
 	const asideStyle = clsx({
 		[styles.container]: true,
-		[styles.container_open]: isOpenArrowBtn,
+		[styles.container_open]: isOpenAside,
 	});
 
-	function handleClickArrowBtn() {
-		setIsOpenArrowButton((prevIsOpenArrowBtn) => !prevIsOpenArrowBtn);
-	}
+	const handleClickArrowBtn = () => {
+		setIsOpenAside((previsOpenAside) => !previsOpenAside);
+	};
 
 	useEffect(() => {
 		function handleClickOutside(event: MouseEvent) {
@@ -67,20 +67,20 @@ export const ArticleParamsForm = ({ initialState, onApply }: Props) => {
 				asideRef.current &&
 				!asideRef.current.contains(event.target as Node)
 			) {
-				setIsOpenArrowButton(false);
+				setIsOpenAside(false);
 			}
 		}
 
-		if (isOpenArrowBtn) {
+		if (isOpenAside) {
 			document.addEventListener('mousedown', handleClickOutside);
 			return () =>
 				document.removeEventListener('mousedown', handleClickOutside);
 		}
-	}, [isOpenArrowBtn]);
+	}, [isOpenAside]);
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpenArrowBtn} onClick={handleClickArrowBtn} />
+			<ArrowButton isOpen={isOpenAside} onClick={handleClickArrowBtn} />
 			<aside className={asideStyle} ref={asideRef}>
 				<form
 					className={styles.form}
